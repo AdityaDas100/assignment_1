@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timer Application</title>
+    <style>
+      .timer {
+        font-size: 48px;
+        text-align: center;
+        margin-top: 100px;
+      }
+      .controls {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="timer" id="timer">25:00</div>
+    <div class="controls">
+      <button class="button" onclick="startTimer()">Start</button>
+      <button class="button" onclick="pauseTimer()">Pause</button>
+      <button class="button" onclick="resetTimer()">Reset</button>
+    </div>
+
+    <script>
+      let timerElement = document.getElementById("timer");
+      let timerInterval;
+
+      function startTimer() {
+        let time = 25 * 60;
+        displayTime(time);
+        timerInterval = setInterval(() => {
+          time--;
+          displayTime(time);
+          if (time === 0) {
+            clearInterval(timerInterval);
+            startBreakTimer();
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        displayTime(25 * 60);
+      }
+
+      function displayTime(time) {
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        timerElement.textContent = `${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+
+      function startBreakTimer() {
+        timerElement.textContent = "05:00";
+        setTimeout(() => {
+          timerElement.textContent = "25:00";
+          startTimer();
+        }, 5 * 60 * 1000);
+      }
+    </script>
+  </body>
+</html>
